@@ -33,7 +33,7 @@ gulp.task('lint', () => {
         paths.gulpFile,
         paths.webpackFile
     ])
-    .pipe(eslint({ fix: true, rules: { 'no-console': 0 } }))
+    .pipe(eslint({ fix: true }))
     .pipe(eslint.format())
     .pipe(flow());
 });

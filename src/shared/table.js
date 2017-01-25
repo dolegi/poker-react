@@ -23,11 +23,4 @@ export default class Table {
   receive(num: number) {
     this.chips += num;
   }
-
-  print() {
-    const cards = this.cards.reduce((sum, c) => `${sum}${c.number}${c.suit}, `, '');
-    /* eslint-disable no-console */
-    console.log(`Table: ${this.chips} chips | [${cards}]`);
-    /* eslint-enable no-console */
-  }
 }

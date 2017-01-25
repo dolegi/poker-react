@@ -10,10 +10,10 @@ class Deck {
   cards: Array<Card>;
 
   constructor() {
-    this.cards = createSuit('\u2660').concat(
-      createSuit('\u2663'),
-      createSuit('\u2665'),
-      createSuit('\u2666'));
+    this.cards = createSuit('s').concat(
+      createSuit('c'),
+      createSuit('d'),
+      createSuit('h'));
   }
 
   shuffle() {
