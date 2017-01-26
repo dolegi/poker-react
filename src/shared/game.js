@@ -10,11 +10,13 @@ import scoreGenerator from '../shared/score-generator';
 export default class Game {
   table: Table;
   players: Array<Player>;
+  stake: number;
   deck: Deck;
 
   constructor(players: Array<Player>) {
     this.players = players;
     this.table = new Table();
+    this.stake = 0;
     this.deck = new Deck();
 
     this.deck.shuffle();
@@ -25,6 +27,7 @@ export default class Game {
   }
 
   makeBet(playerName: string, chips: number) {
+    this.stake = chips;
     this.players.find(p => p.name === playerName).bet(chips);
     this.table.receive(chips);
   }
@@ -46,7 +49,7 @@ export default class Game {
       .map(player => ({name: player.name, score: scoreGenerator(player.cards.concat(this.table.cards))}))
       .sort((a, b) => b.score - a.score);
 
-    if (scores[0].score === scores[1].score)
+    if (scores[0] && scores[1] && scores[0].score === scores[1].score)
       return scores.slice(0, 2).map(s => s.name);
     return scores.slice(0, 1).map(s => s.name);
   }
