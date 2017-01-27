@@ -12,13 +12,12 @@ const player = new Player(playerName, 50);
 let opponents = [...Array(8)].map(() => new Player(Math.random().toString(36).substr(2, 5), 50));
 
 const print = game => {
-  const p = game.players.find(pr => pr.name === playerName);
   const chipsCards = obj => 
     `${obj.chips} ${obj.cards.reduce((res, c) => `${res}${c.number}${c.suit} `, '')}`;
 
   console.log('');
   console.log(`Opponents: ${game.players.filter(x => x.name !== playerName).reduce((res, o) => `${res} (${o.name}:${o.chips})`, '')}`);
-  console.log(`[ ${playerName} ${chipsCards(p)}][ Table ${chipsCards(game.table)}]`);
+  console.log(`[ ${playerName} ${chipsCards(player)}][ Table ${chipsCards(game.table)}]`);
 };
 
 const playerBet = game => {
@@ -42,8 +41,12 @@ const opponentsTurn = game => {
   game.players.filter(x => x.name !== playerName).forEach(opponent => {
     switch(Math.floor(Math.random()*10)) {
       case 0:
-        const chips = Math.floor(Math.random()*opponent.chips);
-        game.makeBet(opponent.name, chips);
+        const remaining = opponent.chips - game.stake;
+        if (remaining > 0) {
+          game.makeBet(opponent.name, game.stake + Math.floor(Math.random()*(remaining)));
+        } else {
+          removePlayers.push(opponent.name);
+        }
         break;
       case 1:
         removePlayers.push(opponent.name);
