@@ -27,7 +27,8 @@ export default class Game {
   }
 
   makeBet(playerName: string, chips: number) {
-    this.stake = chips;
+    if (chips > this.stake)
+      this.stake = chips;
     this.players.find(p => p.name === playerName).bet(chips);
     this.table.receive(chips);
   }

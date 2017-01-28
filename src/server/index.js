@@ -15,7 +15,6 @@ const print = game => {
   const chipsCards = obj => 
     `${obj.chips} ${obj.cards.reduce((res, c) => `${res}${c.number}${c.suit} `, '')}`;
 
-  console.log('');
   console.log(`Opponents: ${game.players.filter(x => x.name !== playerName).reduce((res, o) => `${res} (${o.name}:${o.chips})`, '')}`);
   console.log(`[ ${playerName} ${chipsCards(player)}][ Table ${chipsCards(game.table)}]`);
 };
@@ -25,51 +24,91 @@ const playerBet = game => {
   game.makeBet(playerName, betAmount);
 };
 
-const playerCheck = game =>  game.makeBet(playerName, game.stake);
+const playerCheck = game => {
+  const match = game.stake - player.currentBet;
+  if (match >= 0)
+    game.makeBet(playerName, match);
+};
 
 const playerFold = game => game.players = game.players.filter(x => x.name !== playerName);
 
 const playerTurn = game => {
   if (game.players.find(x => x.name === playerName)) {
-    const index = parseInt(readlineSync.question('|0: bet| |1: check| |2: fold|'), 10);
+    const index = parseInt(readlineSync.question(`Stake: ${game.stake}|0: bet| |1: check| |2: fold|`), 10);
     [playerBet, playerCheck, playerFold][index](game);
   }
 };
 
-const opponentsTurn = game => {
+const opponentsTurn = (game, force=true) => {
   const removePlayers = [];
   game.players.filter(x => x.name !== playerName).forEach(opponent => {
-    switch(Math.floor(Math.random()*10)) {
-      case 0:
-        const remaining = opponent.chips - game.stake;
-        if (remaining > 0) {
-          game.makeBet(opponent.name, game.stake + Math.floor(Math.random()*(remaining)));
-        } else {
+    if (force) {
+      switch(Math.floor(Math.random()*10)) {
+        case 0:
+          if (opponent.chips >= game.stake) {
+            game.makeBet(opponent.name, game.stake + Math.floor(Math.random()*(opponent.chips - game.stake)));
+          } else {
+            console.log(111, opponent.name);
+            removePlayers.push(opponent.name);
+          }
+          break;
+        case 1:
+          console.log(222, opponent.name);
           removePlayers.push(opponent.name);
-        }
-        break;
-      case 1:
-        removePlayers.push(opponent.name);
-        break;
-      default:
-        game.makeBet(opponent.name, game.stake);
+          break;
+        default:
+          const match = opponent.chips - game.stake;
+          if (match >= 0) {
+            game.makeBet(opponent.name, game.stake);
+          } else {
+            console.log(333, opponent.name);
+            removePlayers.push(opponent.name);
+          }
+      }
+    } else if (opponent.currentBet !== game.stake) {
+      switch(Math.floor(Math.random()*10)) {
+        case 1:
+          removePlayers.push(opponent.name);
+          break;
+        default:
+          const match = game.stake - opponent.currentBet;
+          if (match <= opponent.chips) {
+            console.log(opponent.name, match);
+            game.makeBet(opponent.name, match);
+          } else {
+            console.log(444, opponent.name);
+            removePlayers.push(opponent.name);
+          }
+      }
     }
   });
 
   game.players = game.players.filter(x => !removePlayers.find(y => y === x.name));
 };
 
+const turnLoop = game => {
+  if (player.currentBet !== game.stake)
+    playerTurn(game);
+  opponentsTurn(game, false);
+};
+
 const turn = game => {
   game.stake = 0;
+  player.currentBet = 0;
+  opponents.forEach(o => o.currentBet = 0);
+  
   print(game);
   playerTurn(game);
   opponentsTurn(game);
-}
+  print(game);
+  if (player.currentBet !== game.stake)
+    playerTurn(game);
+  opponentsTurn(game, false);
+  print(game);
+};
 
 const loop = () => {
   const game = new Game([player].concat(opponents));
-  console.log(`${player.name}:${player.chips}`);
-  console.log(`Opponents: ${opponents.reduce((res, o) => `${res} (${o.name}:${o.chips})`, '')}`);
 
   game.dealPlayers();
 
@@ -95,5 +134,6 @@ const loop = () => {
   }
 };
 
+console.log(`${player.name}:${player.chips}`);
 loop();
 
