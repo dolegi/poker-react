@@ -12,7 +12,7 @@ const deckReducer = (state = initialState, action) => {
   switch (action.type) {
     case NEW_GAME:
       return state.setIn(['player', 'cards'], action.payload.player.cards)
-        .setIn(['opponent', 'cards'], action.payload.opponent.cards);
+        .setIn(['opponent', 'cards'], action.payload.opponents[0].cards);
     default:
       return state;
   }
