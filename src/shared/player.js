@@ -7,11 +7,21 @@ export default class Player {
   chips: number;
   cards: Array<Card>;
   currentBet: number;
+  score: number;
 
   constructor(name: string, chips: number) {
     this.name = name;
     this.chips = chips;
     this.currentBet = 0;
+    this.score = 0;
+  }
+
+  resetBet() {
+    this.currentBet = 0;
+  }
+
+  setScore(val: number) {
+    this.score = val;
   }
 
   bet(num: number) {

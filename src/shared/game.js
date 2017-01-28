@@ -22,6 +22,11 @@ export default class Game {
     this.deck.shuffle();
   }
 
+  nextTurn() {
+    this.stake = 0;
+    this.players.forEach(p => { p.resetBet() });
+  }
+
   dealPlayers() {
     this.players.forEach(player => player.deal(this.deck.deal(2)));
   }
@@ -45,25 +50,20 @@ export default class Game {
     this.table.cards = this.table.cards.concat(this.deck.deal(1));
   }
 
-  getWinners() {
-    const scores = this.players.map(player => ({
-      name: player.name,
-      score: scoreGenerator(player.cards.concat(this.table.cards))
-    })).sort((a, b) => b.score - a.score);
+  getWinners(): Array<Player> {
+    this.players.forEach(p =>
+      p.setScore(scoreGenerator(p.cards.concat(this.table.cards)))
+    );
+    this.players.sort((a, b) => b.score - a.score);
 
-    if (scores[0] && scores[1] && scores[0].score === scores[1].score)
-      return scores.slice(0, 2).map(s => s.name);
+    if (this.players.length === 2 && this.players[0].score === this.players[1].score)
+      return this.players.slice(0, 2);
 
-    let winners = scores.slice(0, 1);
-    if (winners.length < 1)
-      winners = this.players;
-
-    return winners.map(s => s.name);
+    return this.players.slice(0,1);
   }
 
-  payWinners(winners: Array<string>) {
-    this.players.filter(player => winners.find(winner => winner === player.name))
-        .forEach(player => player.receive(this.table.chips/winners.length));
+  payWinners(winners: Array<Player>) {
+    winners.forEach(player => player.receive(this.table.chips/winners.length));
   }
 
   removePlayers(players: Array<Player>) {

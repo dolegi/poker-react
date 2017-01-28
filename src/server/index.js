@@ -20,16 +20,15 @@ const print = game => {
 };
 
 const turn = game => {
-  game.stake = 0;
-  game.players.forEach(p => p.currentBet = 0);
-  
-  print(game);
-  playerTurn(game, player);
-  opponentsTurn(game, player.name);
-  print(game);
-  if (player.currentBet !== game.stake)
-    playerTurn(game, player);
-  opponentsTurn(game, player.name, false);
+  game.nextTurn();
+
+  const run = force => {
+    print(game);
+    playerTurn(game, player, force);
+    opponentsTurn(game, player.name, force);
+  };
+  run(true);
+  run(false);
   print(game);
 };
 
@@ -49,7 +48,7 @@ const loop = () => {
   const winners = game.getWinners();
   console.log(
     `WINNERS: ${winners.reduce((res, winner, i, self) =>
-      `${res}| ${winner} ${game.table.chips/self.length} `, '')}|`
+      `${res}| ${winner.name} ${game.table.chips/self.length} `, '')}|`
   );
   game.payWinners(winners);
 
