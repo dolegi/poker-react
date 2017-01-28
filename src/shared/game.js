@@ -46,9 +46,10 @@ export default class Game {
   }
 
   getWinners() {
-    const scores = this.players
-      .map(player => ({name: player.name, score: scoreGenerator(player.cards.concat(this.table.cards))}))
-      .sort((a, b) => b.score - a.score);
+    const scores = this.players.map(player => ({
+      name: player.name,
+      score: scoreGenerator(player.cards.concat(this.table.cards))
+    })).sort((a, b) => b.score - a.score);
 
     if (scores[0] && scores[1] && scores[0].score === scores[1].score)
       return scores.slice(0, 2).map(s => s.name);
@@ -58,5 +59,9 @@ export default class Game {
   payWinners(winners: Array<string>) {
     this.players.filter(player => winners.find(winner => winner === player.name))
         .forEach(player => player.receive(this.table.chips/winners.length));
+  }
+
+  removePlayers(players: Array<Player>) {
+    this.players = this.players.filter(x => !players.find(p => p.name === x.name));
   }
 }

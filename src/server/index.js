@@ -5,6 +5,7 @@ import readlineSync from 'readline-sync';
 
 import Player from '../shared/player';
 import Game from '../shared/game';
+import PlayerTurn from './player-turn';
 
 const playerName = readlineSync.question('Player Name: ');
 
@@ -17,26 +18,6 @@ const print = game => {
 
   console.log(`Opponents: ${game.players.filter(x => x.name !== playerName).reduce((res, o) => `${res} (${o.name}:${o.chips})`, '')}`);
   console.log(`[ ${playerName} ${chipsCards(player)}][ Table ${chipsCards(game.table)}]`);
-};
-
-const playerBet = game => {
-  const betAmount = parseInt(readlineSync.question('Bet amount: '), 10);
-  game.makeBet(playerName, betAmount);
-};
-
-const playerCheck = game => {
-  const match = game.stake - player.currentBet;
-  if (match >= 0)
-    game.makeBet(playerName, match);
-};
-
-const playerFold = game => game.players = game.players.filter(x => x.name !== playerName);
-
-const playerTurn = game => {
-  if (game.players.find(x => x.name === playerName)) {
-    const index = parseInt(readlineSync.question(`Stake: ${game.stake}|0: bet| |1: check| |2: fold|`), 10);
-    [playerBet, playerCheck, playerFold][index](game);
-  }
 };
 
 const opponentsTurn = (game, force=true) => {
@@ -86,23 +67,17 @@ const opponentsTurn = (game, force=true) => {
   game.players = game.players.filter(x => !removePlayers.find(y => y === x.name));
 };
 
-const turnLoop = game => {
-  if (player.currentBet !== game.stake)
-    playerTurn(game);
-  opponentsTurn(game, false);
-};
-
 const turn = game => {
   game.stake = 0;
   player.currentBet = 0;
   opponents.forEach(o => o.currentBet = 0);
   
   print(game);
-  playerTurn(game);
+  new PlayerTurn(game, player);
   opponentsTurn(game);
   print(game);
   if (player.currentBet !== game.stake)
-    playerTurn(game);
+    new PlayerTurn(game, player);
   opponentsTurn(game, false);
   print(game);
 };
