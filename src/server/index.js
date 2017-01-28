@@ -5,7 +5,7 @@ import readlineSync from 'readline-sync';
 
 import Player from '../shared/player';
 import Game from '../shared/game';
-import PlayerTurn from './player-turn';
+import playerTurn from './player-turn';
 import opponentsTurn from './opponent-turn';
 
 const player = new Player(readlineSync.question('Player Name: '), 50);
@@ -21,15 +21,14 @@ const print = game => {
 
 const turn = game => {
   game.stake = 0;
-  player.currentBet = 0;
-  opponents.forEach(o => o.currentBet = 0);
+  game.players.forEach(p => p.currentBet = 0);
   
   print(game);
-  new PlayerTurn(game, player);
+  playerTurn(game, player);
   opponentsTurn(game, player.name);
   print(game);
   if (player.currentBet !== game.stake)
-    new PlayerTurn(game, player);
+    playerTurn(game, player);
   opponentsTurn(game, player.name, false);
   print(game);
 };

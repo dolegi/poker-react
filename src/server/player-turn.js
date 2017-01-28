@@ -17,16 +17,13 @@ const playerCheck = (game, player) => {
 
 const playerFold = (game, player) => game.removePlayers([player]);
 
-export default class PlayerTurn {
-
-  constructor(game: Game, player: Player) {
-    if (game.players.find(x => x.name === player.name)) {
-      const index = parseInt(
-        readlineSync.question(`Stake: ${game.stake}|0: bet| |1: check| |2: fold|`),
-        10
-      );
-      [playerBet, playerCheck, playerFold][index](game, player);
-    }
+export default (game: Game, player: Player) => {
+  if (game.players.find(x => x.name === player.name)) {
+    const index = parseInt(
+      readlineSync.question(`Stake: ${game.stake}|0: bet| |1: check| |2: fold|`),
+      10
+    );
+    [playerBet, playerCheck, playerFold][index](game, player);
   }
-}
+};
 
