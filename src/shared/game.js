@@ -53,7 +53,12 @@ export default class Game {
 
     if (scores[0] && scores[1] && scores[0].score === scores[1].score)
       return scores.slice(0, 2).map(s => s.name);
-    return scores.slice(0, 1).map(s => s.name);
+
+    let winners = scores.slice(0, 1);
+    if (winners.length < 1)
+      winners = this.players;
+
+    return winners.map(s => s.name);
   }
 
   payWinners(winners: Array<string>) {
