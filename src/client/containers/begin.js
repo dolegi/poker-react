@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import Button from '../components/button';
-import { newGame } from '../actions/deck-actions';
+import { begin } from '../actions/game-actions';
 
 const mapDispatchToProps = dispatch => ({
-  action: () => { dispatch(newGame()); },
-  actionLabel: 'New Game',
+  action: () => { dispatch(begin()); },
+  actionLabel: 'Begin',
 });
 
 export default connect(null, mapDispatchToProps)(Button);

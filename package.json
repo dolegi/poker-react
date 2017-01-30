@@ -43,6 +43,7 @@
   "dependencies": {
     "babel-polyfill": "^6.20.0",
     "immutable": "^3.8.1",
+    "ramda": "^0.23.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.1",

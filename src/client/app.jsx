@@ -3,26 +3,25 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { Provider } from 'react-redux';
-import deckReducer from './reducers/deck-reducer';
-import NewGame from './containers/new-game';
+import gameReducer from './reducers/game-reducer';
+import Begin from './containers/begin';
 import PlayerCards from './containers/player-cards';
-import OpponentCards from './containers/opponent-cards';
+import OpponentsCards from './containers/opponents-cards';
 
 const store = createStore(combineReducers({
-  deck: deckReducer,
+  game: gameReducer,
 }));
 
 ReactDOM.render(
   <Provider store={store}>
     <div>
-      <NewGame />
+      <Begin />
       <div>
         Player: <br />
         <PlayerCards />
       </div>
       <div>
-        Opponent: <br />
-        <OpponentCards />
+        <OpponentsCards />
       </div>
     </div>
   </Provider>,
