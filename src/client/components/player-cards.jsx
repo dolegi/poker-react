@@ -1,21 +1,24 @@
 import React, { PropTypes } from 'react';
 
 const PlayerCards = ({ player }) => {
-  if (player.cards) {
-    const displayCards = player.cards.map((card, i) => <p key={i}>{card.number} {card.suit}</p>);
+	if (player.cards) {
+		const displayCards = player.cards.reduce((acc, card) => `${acc} ${card.number}${card.suit}`, '');
 
-    return <div>{displayCards}</div>;
-  }
-  return <div></div>;
+		return (<div className='pure-1-12'>
+			{player.cards.reduce((acc, card) => `${acc} ${card.number}${card.suit}`, '')}
+			<div>{player.chips}</div>
+		</div>);
+	}
+	return <div></div>;
 };
 
 PlayerCards.propTypes = {
-  player: PropTypes.shape({
-    cards: PropTypes.arrayOf(React.PropTypes.shape({
-      suit: React.PropTypes.string.isRequired,
-      number: React.PropTypes.number.isRequired,
-    })).isRequired,
-  }),
+	player: PropTypes.shape({
+		cards: PropTypes.arrayOf(React.PropTypes.shape({
+			suit: React.PropTypes.string.isRequired,
+			number: React.PropTypes.number.isRequired,
+		})),
+	}),
 };
 
 export default PlayerCards;
