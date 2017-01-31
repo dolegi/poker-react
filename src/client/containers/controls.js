@@ -8,7 +8,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 });
 
 const mapStateToProps = state => ({
-  mode: R.path(['mode'], state.getIn(['game'])),
+  mode: R.path(['controlsMode'], state.getIn(['game'])),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Controls);
