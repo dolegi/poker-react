@@ -49,6 +49,12 @@ gulp.task('test', ['build'], () =>
     .pipe(mocha())
 );
 
+gulp.task('dist', () => {
+    return gulp.src(paths.clientEntryPoint)
+        .pipe(webpack(webpackConfig))
+        .pipe(gulp.dest(paths.distDir));
+});
+
 gulp.task('main', ['test'], () => {
     return gulp.src(paths.clientEntryPoint)
         .pipe(webpack(webpackConfig))
