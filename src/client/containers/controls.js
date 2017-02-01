@@ -1,10 +1,13 @@
 import R from 'ramda';
 import { connect } from 'react-redux';
 import Controls from '../components/controls';
-import { begin } from '../actions/game-actions';
+import { begin, newTurn } from '../actions/game-actions';
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  begin: () => { dispatch(begin()); },
+  begin: (name) => {
+    dispatch(begin(name));
+    dispatch(newTurn());
+  },
 });
 
 const mapStateToProps = state => ({

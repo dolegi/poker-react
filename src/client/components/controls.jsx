@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 const Controls = ({ mode, begin }) => {
   switch(mode) {
     case 'begin':
-      return <button className='pure-button pure-button-primary' onClick={begin}>Begin</button>;
+      return <button className='pure-button pure-button-primary' onClick={() => begin('Dom') }>Begin</button>;
     case 'gaming':
       return (<div>
       <button className='pure-button pure-button-primary' onClick=''>Bet</button>
