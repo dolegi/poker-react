@@ -5,8 +5,9 @@ import { combineReducers } from 'redux-immutable';
 import { Provider } from 'react-redux';
 import gameReducer from './reducers/game-reducer';
 import Controls from './containers/controls';
-import PlayerCards from './containers/player-cards';
-import OpponentsCards from './containers/opponents-cards';
+import Player from './containers/player';
+import Table from './containers/table';
+import Opponents from './containers/opponents';
 
 const store = createStore(combineReducers({
   game: gameReducer,
@@ -14,15 +15,20 @@ const store = createStore(combineReducers({
 
 ReactDOM.render(
   <Provider store={store}>
-    <div style={{textAlign: 'center'}} className='pure-u-1'>
+    <div style={{ textAlign: 'center' }} className="pure-u-1">
       <div>
-        <OpponentsCards />
+        <Opponents />
+      </div>
+      <div>
+        Table: <br />
+        <Table />
       </div>
       <div>
         Player: <br />
-        <PlayerCards />
+        <Player />
       </div>
       <Controls />
+
     </div>
   </Provider>,
   document.querySelector('.app'),
