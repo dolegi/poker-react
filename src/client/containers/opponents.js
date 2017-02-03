@@ -1,9 +1,9 @@
 import R from 'ramda';
 import { connect } from 'react-redux';
-import OpponentsCards from '../components/opponents-cards';
+import Opponents from '../components/opponents';
 
 const mapStateToProps = state => ({
   opponents: R.path(['opponents'], state.getIn(['game'])),
 });
 
-export default connect(mapStateToProps)(OpponentsCards);
+export default connect(mapStateToProps)(Opponents);
