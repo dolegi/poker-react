@@ -2,7 +2,7 @@
   "name": "poker-react",
   "version": "1.0.0",
   "description": "Poker website using a modern js stack",
-  "main": "./src/server/index.js",
+  "main": "gulp",
   "license": "MIT",
   "scripts": {
     "start": "gulp",
