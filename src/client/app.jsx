@@ -16,9 +16,7 @@ const store = createStore(combineReducers({
 ReactDOM.render(
   <Provider store={store}>
     <div style={{ textAlign: 'center' }} className="pure-u-1">
-      <div>
-        <Opponents />
-      </div>
+      <Opponents />
       <div>
         Table: <br />
         <Table />
