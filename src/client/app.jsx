@@ -17,13 +17,9 @@ ReactDOM.render(
   <Provider store={store}>
     <div style={{ textAlign: 'center' }} className="pure-u-1">
       <Opponents />
-      <div>
-        Table: <br />
-        <Table />
-      </div>
+      <Table />
       <Player />
       <Controls />
-
     </div>
   </Provider>,
   document.querySelector('.app'),

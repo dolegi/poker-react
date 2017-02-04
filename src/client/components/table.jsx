@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 
 const Table = ({ table }) =>
   <div className="pure-1-12">
+    Table: <br />
     {table.cards.reduce((acc, card) => `${acc} ${card.number}${card.suit}`, '')}
     <div>{table.chips}</div>
   </div>;
