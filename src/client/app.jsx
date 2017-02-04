@@ -23,10 +23,7 @@ ReactDOM.render(
         Table: <br />
         <Table />
       </div>
-      <div>
-        Player: <br />
-        <Player />
-      </div>
+      <Player />
       <Controls />
 
     </div>

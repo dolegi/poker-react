@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 
 const Player = ({ player }) =>
   <div className="pure-1-12">
+    {`${player.name ? player.name : 'Player'}:`} <br />
     {player.cards.reduce((acc, card) => `${acc} ${card.number}${card.suit}`, '')}
     <div>{player.chips}</div>
   </div>;
