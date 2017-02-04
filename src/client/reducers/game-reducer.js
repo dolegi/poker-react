@@ -5,6 +5,7 @@ import {
   PASS,
   FOLD,
   OPPONENTS_TURN,
+  ROUND_TWO,
 } from '../actions/game-actions';
 import Deck from '../../shared/deck';
 
@@ -51,7 +52,7 @@ const begin = (state, name) => {
       cards: deck.deal(2),
       currentBet: 0,
     }, o)),
-    controlsMode: 'gaming',
+    controlsMode: 'roundOne',
   });
 };
 
@@ -144,6 +145,8 @@ export default (state = initialState, action) => {
       return fold(state);
     case OPPONENTS_TURN:
       return opponentsTurn(state);
+    case ROUND_TWO:
+      return Object.assign({}, state, { controlsMode: 'roundTwo' });
     default:
       return state;
   }

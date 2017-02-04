@@ -18,14 +18,14 @@ class Controls extends React.Component {
           <button className={buttonStyling} onClick={begin}>Begin</button>
         </div>);
       }
-      case 'gaming': {
+      case 'roundOne': {
         const setAmount = e => this.setState({ betAmount: e.target.value });
-        const bet = () => this.props.bet(parseInt(this.state.betAmount, 10));
+        const bet = () => this.props.roundOne.bet(parseInt(this.state.betAmount, 10));
         return (<div>
           <input style={{ width: '55px' }} type="number" value={this.state.betAmount} onChange={setAmount} />
           <button className={buttonStyling} onClick={bet}>Bet</button>
-          <button className={buttonStyling} onClick={this.props.pass}>Pass</button>
-          <button className={buttonStyling} onClick={this.props.fold}>Fold</button>
+          <button className={buttonStyling} onClick={this.props.roundOne.pass}>Pass</button>
+          <button className={buttonStyling} onClick={this.props.roundOne.fold}>Fold</button>
         </div>);
       }
       default:
@@ -37,9 +37,11 @@ class Controls extends React.Component {
 Controls.propTypes = {
   mode: PropTypes.string.isRequired,
   begin: PropTypes.func.isRequired,
-  bet: PropTypes.func.isRequired,
-  pass: PropTypes.func.isRequired,
-  fold: PropTypes.func.isRequired,
+  roundOne: PropTypes.shape({
+    bet: PropTypes.func.isRequired,
+    pass: PropTypes.func.isRequired,
+    fold: PropTypes.func.isRequired,
+  }),
 };
 
 export default Controls;

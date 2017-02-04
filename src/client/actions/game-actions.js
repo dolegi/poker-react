@@ -17,3 +17,6 @@ export const fold = createAction(FOLD, () => {});
 
 export const OPPONENTS_TURN = 'OPPONENTS_TURN';
 export const opponentsTurn = createAction(OPPONENTS_TURN, () => {});
+
+export const ROUND_TWO = 'ROUND_TWO';
+export const roundTwo = createAction(ROUND_TWO, () => {});
