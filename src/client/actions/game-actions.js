@@ -15,8 +15,11 @@ export const pass = createAction(PASS, () => {});
 export const FOLD = 'FOLD';
 export const fold = createAction(FOLD, () => {});
 
-export const OPPONENTS_TURN = 'OPPONENTS_TURN';
-export const opponentsTurn = createAction(OPPONENTS_TURN, () => {});
+export const OPPONENTS_TURN_ONE = 'OPPONENTS_TURN_ONE';
+export const opponentsTurnOne = createAction(OPPONENTS_TURN_ONE, () => {});
 
 export const ROUND_TWO = 'ROUND_TWO';
 export const roundTwo = createAction(ROUND_TWO, () => {});
+
+export const OPPONENTS_TURN_TWO = 'OPPONENTS_TURN_TWO';
+export const opponentsTurnTwo = createAction(OPPONENTS_TURN_TWO, () => {});

@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { connect } from 'react-redux';
 import Controls from '../components/controls';
-import { begin, newTurn, bet, pass, fold, opponentsTurn, roundTwo } from '../actions/game-actions';
+import { begin, newTurn, bet, pass, fold, opponentsTurnOne, roundTwo, opponentsTurnTwo } from '../actions/game-actions';
 
 const mapDispatchToProps = dispatch => ({
   begin: (name) => {
@@ -11,18 +11,28 @@ const mapDispatchToProps = dispatch => ({
   roundOne: {
     bet: (amount) => {
       dispatch(bet(amount));
-      dispatch(opponentsTurn());
+      dispatch(opponentsTurnOne());
       dispatch(roundTwo());
     },
     pass: () => {
       dispatch(pass());
-      dispatch(opponentsTurn());
+      dispatch(opponentsTurnOne());
       dispatch(roundTwo());
     },
     fold: () => {
       dispatch(fold());
-      dispatch(opponentsTurn());
+      dispatch(opponentsTurnOne());
       dispatch(roundTwo());
+    },
+  },
+  roundTwo: {
+    pass: () => {
+      dispatch(pass());
+      dispatch(opponentsTurnTwo());
+    },
+    fold: () => {
+      dispatch(fold());
+      dispatch(opponentsTurnTwo());
     },
   },
 });

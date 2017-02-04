@@ -6,7 +6,7 @@ import readlineSync from 'readline-sync';
 import Player from '../shared/player';
 import Game from '../shared/game';
 import playerTurn from './player-turn';
-import opponentsTurn from './opponent-turn';
+import opponentsTurnOne from './opponent-turn';
 
 const player = new Player(readlineSync.question('Player Name: '), 50);
 let opponents = [...Array(8)].map(() => new Player(Math.random().toString(36).substr(2, 5), 50));
@@ -25,7 +25,7 @@ const turn = game => {
   const run = force => {
     print(game);
     playerTurn(game, player, force);
-    opponentsTurn(game, player.name, force);
+    opponentsTurnOne(game, player.name, force);
   };
   run(true);
   run(false);

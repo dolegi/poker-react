@@ -4,8 +4,9 @@ import {
   BET,
   PASS,
   FOLD,
-  OPPONENTS_TURN,
+  OPPONENTS_TURN_ONE,
   ROUND_TWO,
+  OPPONENTS_TURN_TWO,
 } from '../actions/game-actions';
 import Deck from '../../shared/deck';
 
@@ -21,7 +22,7 @@ const setInPlayer = (opts = {}, player = {}) => ({
 const setInTable = (opts = {}, table = {}) => ({
   deck: opts.deck || table.deck || [],
   cards: opts.cards || table.cards || [],
-  chips: opts.chips || table.chips || 1000,
+  chips: opts.chips || table.chips || 0,
   stake: opts.stake || table.stake || 0,
 });
 
@@ -84,7 +85,7 @@ const fold = state => Object.assign({}, state, {
   }, state.player),
 });
 
-const opponentsTurn = (state) => {
+const opponentsTurnOne = (state) => {
   const opponents = state.opponents.slice(0);
   let tableChips = 0;
   let highStake = state.table.stake;
@@ -123,7 +124,42 @@ const opponentsTurn = (state) => {
   });
 
   return Object.assign({}, state, {
-    opponents: opponents,
+    opponents,
+    table: setInTable({
+      chips: state.table.chips + tableChips,
+      stake: highStake,
+    }, state.table),
+  });
+};
+
+const opponentsTurnTwo = (state) => {
+  const opponents = state.opponents.slice(0);
+  let tableChips = 0;
+  const highStake = state.table.stake;
+  opponents.forEach((opponent) => {
+    if (opponent.folded) {
+      return;
+    }
+    switch (Math.floor(Math.random() * 10)) {
+      case 1: {
+        opponent.folded = true;
+        break;
+      }
+      default: {
+        const match = opponent.chips - highStake;
+        if (match >= 0) {
+          opponent.currentBet += highStake;
+          opponent.chips -= highStake;
+          tableChips += highStake;
+        } else {
+          opponent.folded = true;
+        }
+      }
+    }
+  });
+
+  return Object.assign({}, state, {
+    opponents,
     table: setInTable({
       chips: state.table.chips + tableChips,
       stake: highStake,
@@ -143,10 +179,12 @@ export default (state = initialState, action) => {
       return bet(state, state.table.stake - state.player.currentBet);
     case FOLD:
       return fold(state);
-    case OPPONENTS_TURN:
-      return opponentsTurn(state);
+    case OPPONENTS_TURN_ONE:
+      return opponentsTurnOne(state);
     case ROUND_TWO:
       return Object.assign({}, state, { controlsMode: 'roundTwo' });
+    case OPPONENTS_TURN_TWO:
+      return opponentsTurnTwo(state);
     default:
       return state;
   }

@@ -28,6 +28,12 @@ class Controls extends React.Component {
           <button className={buttonStyling} onClick={this.props.roundOne.fold}>Fold</button>
         </div>);
       }
+      case 'roundTwo': {
+        return (<div>
+          <button className={buttonStyling} onClick={this.props.roundTwo.pass}>Pass</button>
+          <button className={buttonStyling} onClick={this.props.roundTwo.fold}>Fold</button>
+        </div>);
+      }
       default:
         return null;
     }
@@ -39,6 +45,10 @@ Controls.propTypes = {
   begin: PropTypes.func.isRequired,
   roundOne: PropTypes.shape({
     bet: PropTypes.func.isRequired,
+    pass: PropTypes.func.isRequired,
+    fold: PropTypes.func.isRequired,
+  }),
+  roundTwo: PropTypes.shape({
     pass: PropTypes.func.isRequired,
     fold: PropTypes.func.isRequired,
   }),
