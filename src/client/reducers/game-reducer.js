@@ -83,6 +83,53 @@ const fold = state => Object.assign({}, state, {
   }, state.player),
 });
 
+const opponentsTurn = (state) => {
+  const opponents = state.opponents.slice(0);
+  let tableChips = 0;
+  let highStake = state.table.stake;
+  opponents.forEach((opponent) => {
+    if (opponent.folded) {
+      return;
+    }
+    switch (Math.floor(Math.random() * 10)) {
+      case 0: {
+        if (opponent.chips >= highStake) {
+          const betAmount = highStake + Math.ceil(Math.random() * (opponent.chips - highStake));
+          highStake = betAmount;
+          opponent.currentBet += betAmount;
+          opponent.chips -= betAmount;
+          tableChips += betAmount;
+        } else {
+          opponent.folded = true;
+        }
+        break;
+      }
+      case 1: {
+        opponent.folded = true;
+        break;
+      }
+      default: {
+        const match = opponent.chips - highStake;
+        if (match >= 0) {
+          opponent.currentBet += highStake;
+          opponent.chips -= highStake;
+          tableChips += highStake;
+        } else {
+          opponent.folded = true;
+        }
+      }
+    }
+  });
+
+  return Object.assign({}, state, {
+    opponents: opponents,
+    table: setInTable({
+      chips: state.table.chips + tableChips,
+      stake: highStake,
+    }, state.table),
+  });
+};
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case BEGIN:
@@ -96,7 +143,7 @@ export default (state = initialState, action) => {
     case FOLD:
       return fold(state);
     case OPPONENTS_TURN:
-      return state;
+      return opponentsTurn(state);
     default:
       return state;
   }

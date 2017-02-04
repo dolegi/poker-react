@@ -1,17 +1,14 @@
 import React, { PropTypes } from 'react';
 
-const Opponents = ({ opponents }) => {
-  if (opponents.length > 0) {
-    return (<div>
-      {opponents.map((opponent, i) => (<div className="pure-u-1-8" key={i}>
-        <div>{opponent.name}</div>
-        <div>{opponent.cards.map(card => `${card.number}${card.suit} `)}</div>
-        <div>{opponent.chips}</div>
-      </div>))}
-    </div>);
-  }
-  return <div />;
-};
+const Opponents = ({ opponents }) => (<div>
+  {opponents
+  .filter(o => !o.folded)
+  .map((opponent, i) => (<div className="pure-u-1-8" key={i}>
+    <div>{opponent.name}</div>
+    <div>{opponent.cards.map(card => `${card.number}${card.suit} `)}</div>
+    <div>{opponent.chips}</div>
+  </div>))}
+</div>);
 
 Opponents.propTypes = {
   opponents: PropTypes.arrayOf(PropTypes.shape({
