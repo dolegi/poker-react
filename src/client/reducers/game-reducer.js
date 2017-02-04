@@ -57,13 +57,14 @@ const begin = (state, name) => {
   });
 };
 
-const firstTurn = state => Object.assign({}, state, {
-  player: setInPlayer({
+const nextTurn = state => Object.assign({}, state, {
+  table: setInTable({
     stake: 0,
+  }, state.table),
+  player: setInPlayer({
     currentBet: 0,
   }, state.player),
   opponents: state.opponents.map(o => setInPlayer({
-    stake: 0,
     currentBet: 0,
   }, o)),
 });
@@ -148,9 +149,12 @@ const opponentsTurnTwo = (state) => {
       default: {
         const match = opponent.chips - highStake;
         if (match >= 0) {
-          opponent.currentBet += highStake;
-          opponent.chips -= highStake;
-          tableChips += highStake;
+          if (opponent.currentBet < highStake) {
+            const betAmount = highStake - opponent.currentBet;
+            opponent.currentBet += betAmount;
+            opponent.chips -= betAmount;
+            tableChips += betAmount;
+          }
         } else {
           opponent.folded = true;
         }
@@ -172,7 +176,7 @@ export default (state = initialState, action) => {
     case BEGIN:
       return begin(state, action.payload.name);
     case NEW_TURN:
-      return firstTurn(state);
+      return nextTurn(state);
     case BET:
       return bet(state, action.payload.amount);
     case PASS:

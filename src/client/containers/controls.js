@@ -29,10 +29,12 @@ const mapDispatchToProps = dispatch => ({
     pass: () => {
       dispatch(pass());
       dispatch(opponentsTurnTwo());
+      dispatch(newTurn());
     },
     fold: () => {
       dispatch(fold());
       dispatch(opponentsTurnTwo());
+      dispatch(newTurn());
     },
   },
 });
