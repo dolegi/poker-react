@@ -2,6 +2,9 @@ import {
   BEGIN,
   NEW_TURN,
   BET,
+  PASS,
+  FOLD,
+  OPPONENTS_TURN,
 } from '../actions/game-actions';
 import Deck from '../../shared/deck';
 
@@ -74,6 +77,12 @@ const bet = (state, amount) => Object.assign({}, state, {
   }, state.table),
 });
 
+const fold = state => Object.assign({}, state, {
+  player: setInPlayer({
+    folded: true,
+  }, state.player),
+});
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case BEGIN:
@@ -82,6 +91,12 @@ export default (state = initialState, action) => {
       return firstTurn(state);
     case BET:
       return bet(state, action.payload.amount);
+    case PASS:
+      return bet(state, state.table.stake - state.player.currentBet);
+    case FOLD:
+      return fold(state);
+    case OPPONENTS_TURN:
+      return state;
     default:
       return state;
   }
